@@ -18,11 +18,21 @@ public class UsuarioService {
     }
 
     /**
-     * Recebe o parâmetro da classe UsuarioRestController
+     * Recebe o parâmetro da classe UsuarioRestController e verifica se o usuário informado já existe,
+     * caso existir irá fornecer uma exceção
      *
      * @param usuarioEntity
      */
-    public void createUser(UsuarioEntity usuarioEntity){
+    public void createAccount(UsuarioEntity usuarioEntity) throws IllegalAccessException{
+        boolean userAleartyExist = usuarioRepository
+                .findByUsername(usuarioEntity.getUsername())
+                .stream().anyMatch(e -> e.getUsername()
+                        .equals(usuarioEntity.getUsername()));
+
+        if (userAleartyExist){
+            throw new IllegalAccessException("O usuário já existe.");
+        }
+
         usuarioEntity.setRegister_At(LocalDateTime.now());
         usuarioRepository.save(usuarioEntity);
     }
