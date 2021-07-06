@@ -10,7 +10,6 @@ import tech.martindev.mwh.repositories.UsuarioRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 @Service
@@ -129,6 +128,14 @@ public class UsuarioService {
         });
     }
 
+    /**
+     * Está aguardando o parâmetro id e newUsername (O novo nick de usuário)
+     * Depois está procurando se a id fornecida existe no banco de dados, caso exister
+     * irá ver se o nick já foi utilizado e se caso não irá alterar com o novo nome de usuário.
+     *
+     * @param id
+     * @param newUsername
+     */
     @Transactional
     public void updateUsernameById(Long id, String newUsername) {
         if (usuarioRepository.findById(id).isEmpty()){
